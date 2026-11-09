@@ -1,0 +1,9 @@
+{
+  "name": "Geyser Warranty Check",
+  "short_name": "Geyser Check",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f3f5f8",
+  "theme_color": "#0b5cab",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}
