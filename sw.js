@@ -1,6 +1,6 @@
 // Caches the app so it works in a roof space with no signal.
 // Bump VERSION whenever you change any file so phones pick up the update.
-const VERSION = "gwc-v3";
+const VERSION = "gwc-v4";
 const FILES = ["./", "index.html", "app.js", "decode.js", "manifest.webmanifest", "icon.svg"];
 
 self.addEventListener("install", e => {

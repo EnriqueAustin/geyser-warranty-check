@@ -1,16 +1,37 @@
 # Geyser Warranty Check
 
-Internal tool for our plumbers. Type the code from a Kwikot geyser's serial plate (e.g. `11-K-5`) and it says:
+Internal tool for our plumbers. Pick the brand, type what's on the geyser's serial label, and it says:
 
-- **Under warranty:** don't replace it. Leave it in place and log a claim with Kwikot (number, email and online link are on the page).
-- **Under warranty, claim at risk:** a Kwikot refusal reason was ticked (e.g. non-genuine parts, SANS 10254 problems).
+- **Under warranty:** don't replace it. Leave it in place and log a claim with the manufacturer (numbers, emails and steps are on the page).
+- **Under warranty, claim at risk:** one of the manufacturer's refusal reasons was ticked (e.g. non-genuine parts, SANS 10254 problems).
 - **Out of warranty:** we replace it ourselves (SANS 10254 checklist shown).
 
-## How the code works (Kwikot's rules)
+Brands covered: **Kwikot** and **Ariston / Heat Tech**.
 
-From kwikot.com/consumer/faqs: first number = month made, letter = year made, last number = tank warranty in years. Cover runs from the manufacture date, to the end of that month N years later. Kwikot confirms "D" = 2025. The rest of the letters follow the same sequence (no O or Q, repeating every 24 years). The tool picks the most recent year that isn't in the future.
+## How the codes work
+
+### Kwikot
+
+From kwikot.com/consumer/faqs: the code looks like `11-K-5`. The first number is the month made, the letter is the year made, and the last number is the tank warranty in years. Cover runs from the manufacture date, to the end of that month N years later.
+
+Kwikot confirms that "D" = 2025. The other letters follow the same sequence (no O or Q, repeating every 24 years). The tool picks the most recent year that isn't in the future.
+
+### Ariston / Heat Tech
+
+From Ariston Thermo SA's warranty letter (2 January 2021) and the Heat Tech installation sheet: the label has a 21-character serial, e.g. `3680036 Z2 20265 1003658`. The middle 5 digits are the year and the day of the year. `20265` means day 265 of 2020, which is 21 September 2020.
+
+The cylinder has 5 years' warranty from the manufacture date. It runs from the purchase or installation date instead if the client has proof. Other parts have shorter cover:
+
+- element and thermostat: 1 year
+- gaskets: 1 year
+- safety valve and drain cock: 2 years
+- anode: none
+
+Contacts: after-sales 087 943 7470, service@heattech.co.za. Call centre 010 745 9911, service.za@aristonthermo.com.
 
 ## Run it on this PC
+
+Double-click `Start Geyser Check.bat`, or:
 
 ```bash
 node serve.js
@@ -20,13 +41,13 @@ Then open http://localhost:5178.
 
 ## Put it on the team's phones
 
-Phones can't reach this PC. Host the folder (drag it onto Netlify Drop, or any static host), then each plumber opens the link and taps "Add to Home Screen". Once loaded, it also works with no signal.
+Phones can't reach this PC. Host the folder (drag it onto Netlify Drop, or any static host). Each plumber then opens the link and taps "Add to Home Screen". Once loaded, it also works with no signal.
 
 When you change any file, bump `VERSION` in `sw.js` so phones pick up the update.
 
 ## Files
 
-- `decode.js`: code decoding and warranty rules
-- `app.js`: page behaviour, Kwikot contact details, claim-refusal list
+- `decode.js`: code and serial decoding, warranty rules for each brand
+- `app.js`: page behaviour, plus each brand's contacts, claim steps and refusal reasons
 - `index.html`: page and styling
 - `test.js`: run `node test.js` to check the decoding

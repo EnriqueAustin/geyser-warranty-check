@@ -34,5 +34,23 @@ eq("Future install ignored", [r.from, r.install], ["manufacture", null]);
 r = G.assess("6-D-5", d("2026-11-10"), d("2025-01-01"));
 eq("Install before manufacture ignored", r.from, "manufacture");
 
+// ---- Ariston / Heat Tech ----
+const A = (s, t, i) => G.assessAriston(s, d(t), i ? d(i) : null);
+r = A("3680036 Z2 20265 1003658", "2026-11-10");
+eq("Ariston day 265 of 2020 (leap year) = 21 Sep", r.made.toDateString(), d("2020-09-21").toDateString());
+eq("Ariston example out of warranty, expired 21 Sep 2025", [r.covered, r.expiry.toDateString()], [false, d("2025-09-21").toDateString()]);
+r = A("3680036Z2241001003658", "2026-11-10");
+eq("No spaces works, day 100 of 2024 = 9 Apr, covered", [r.ok, r.made.toDateString(), r.covered, r.notes.length], [true, d("2024-04-09").toDateString(), true, 0]);
+r = A("25032", "2026-11-10");
+eq("Middle group alone works, with a note", [r.ok, r.made.toDateString(), r.notes.length], [true, d("2025-02-01").toDateString(), 1]);
+eq("Day 366 in a non-leap year rejected", A("3680036 Z2 25366 1003658", "2026-11-10").ok, false);
+eq("Day 000 rejected", A("3680036 Z2 25000 1003658", "2026-11-10").ok, false);
+eq("Future date rejected", A("3680036 Z2 26350 1003658", "2026-11-10").ok, false);
+eq("Garbage rejected", A("hello", "2026-11-10").ok, false);
+r = A("3680036 Z2 21032 1003658", "2026-02-01");
+eq("Last day of cover is covered", [r.covered, r.expiry.toDateString()], [true, d("2026-02-01").toDateString()]);
+r = A("3680036 Z2 20265 1003658", "2026-11-10", "2022-03-01");
+eq("Ariston install date with proof", [r.from, r.covered, r.expiry.toDateString()], ["installation", true, d("2027-03-01").toDateString()]);
+
 console.log(fail ? `\n${fail} failed` : "\nAll passed");
 process.exit(fail ? 1 : 0);

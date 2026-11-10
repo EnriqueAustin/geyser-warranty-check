@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Geyser Warranty Check</title>
-<meta name="description" content="Internal tool: read a Kwikot serial plate code and see if the geyser is under warranty.">
+<meta name="description" content="Internal tool: read a Kwikot or Ariston / Heat Tech serial label and see if the geyser is under warranty.">
 <meta name="theme-color" content="#0b5cab">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
@@ -108,20 +108,40 @@ ol.req span{color:var(--muted);font-size:.9rem}
 .pirb{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:14px;margin-top:12px}
 .pirb p{margin:0;flex:1 1 240px;min-width:0}
 .copy{min-height:36px;padding:6px 12px;font-size:.85rem}
+.contact .line .small{margin-left:auto}
+.brands{display:flex;gap:6px;padding:4px;background:var(--bg);border:1px solid var(--line);border-radius:10px;margin-bottom:14px}
+.brands button{flex:1;min-height:42px;padding:8px 10px;background:transparent;color:var(--muted);border-radius:7px}
+.brands button[aria-pressed="true"]{background:var(--brand);color:var(--brand-ink)}
+#serial{font-size:1.15rem;font-weight:700;letter-spacing:.04em;text-align:center;text-transform:uppercase}
+.serial-demo{flex-wrap:wrap;font-size:1.15rem}
+.code-demo span.hl{background:var(--ok-bg);border-color:var(--ok)}
 [hidden]{display:none!important}
 </style>
 </head>
 <body>
 <header>
   <h1>Geyser Warranty Check</h1>
-  <p>Kwikot geysers · internal team tool</p>
+  <p>Kwikot and Ariston / Heat Tech geysers · internal team tool</p>
 </header>
 
 <main>
   <form id="f" class="card" autocomplete="off">
-    <label for="code">Code on the serial plate</label>
-    <input id="code" type="text" inputmode="text" placeholder="11-K-5" value="03-V-5" maxlength="10" autocapitalize="characters" spellcheck="false">
-    <p class="hint">Short code on the serial plate sticker, next to the element cover. Month, letter, years.</p>
+    <div class="brands" id="brandPick" role="group" aria-label="Geyser brand">
+      <button type="button" data-pick="kwikot" aria-pressed="true">Kwikot</button>
+      <button type="button" data-pick="ariston" aria-pressed="false">Ariston / Heat Tech</button>
+    </div>
+
+    <div data-brand="kwikot">
+      <label for="code">Code on the serial plate</label>
+      <input id="code" type="text" inputmode="text" placeholder="11-K-5" value="03-V-5" maxlength="10" autocapitalize="characters" spellcheck="false">
+      <p class="hint">Short code on the serial plate sticker, next to the element cover. Month, letter, years.</p>
+    </div>
+
+    <div data-brand="ariston" hidden>
+      <label for="serial">Serial number on the label</label>
+      <input id="serial" type="text" inputmode="text" placeholder="3680036 Z2 20265 1003658" value="3680036 Z2 20265 1003658" maxlength="32" autocapitalize="characters" spellcheck="false">
+      <p class="hint">The 21-character number above the barcode on the green serial label. Type it with or without spaces.</p>
+    </div>
 
     <details>
       <summary>Have proof of installation? Add the install date</summary>
@@ -137,21 +157,15 @@ ol.req span{color:var(--muted);font-size:.9rem}
   <div id="out" aria-live="polite"></div>
 
   <section id="claimBox" class="card" hidden>
-    <h2>Before you call it a Kwikot claim</h2>
-    <p class="hint" style="margin-top:-4px">Tick anything that applies. Kwikot can refuse the claim for these.</p>
+    <h2 id="claimHead">Before you call it a Kwikot claim</h2>
+    <p class="hint" style="margin-top:-4px" id="claimLead"></p>
     <div class="checks" id="checks"></div>
-    <p class="small">A replacement geyser keeps the rest of the original warranty; it doesn't start again. On geysers older than a year, electrical parts carry a 2-month warranty.</p>
+    <p class="small" id="claimNote"></p>
   </section>
 
   <section id="kwikotBox" class="card contact" hidden>
-    <h2>Log the claim with Kwikot</h2>
-    <ol class="steps">
-      <li><b>Leave the geyser in place.</b> Kwikot or its agent must inspect it first.</li>
-      <li>Isolate power and water and make it safe.</li>
-      <li>Have the <b>geyser code, serial number and model number</b> from the plate.</li>
-      <li>If the plate has faded: tax invoice, CoC or installer's proof of installation, plus the client's full details and address. Cash slips without customer details aren't accepted.</li>
-      <li>Keep the reference number Kwikot gives you. It's the claim number for follow-ups. Turnaround is usually 24 business hours.</li>
-    </ol>
+    <h2 id="logHead">Log the claim with Kwikot</h2>
+    <ol class="steps" id="steps"></ol>
     <div id="contactLines" style="margin-top:10px"></div>
   </section>
 
@@ -221,7 +235,14 @@ ol.req span{color:var(--muted);font-size:.9rem}
     </div>
   </section>
 
-  <section class="card">
+  <section class="card" data-brand="ariston" hidden>
+    <h2>How the Ariston serial works</h2>
+    <div class="code-demo serial-demo" aria-hidden="true"><span>3680036</span><span>Z2</span><span class="hl">20265</span><span>1003658</span></div>
+    <p style="margin-top:0">The highlighted group is the manufacture date: <b>20</b> is the year (2020) and <b>265</b> is the day of that year (21 September). The first group is the product reference and the last is a random number.</p>
+    <p class="small">The cylinder has 5 years' warranty from the manufacture date, or from the purchase or installation date if the client has proof. The same label format is used on Heat Tech and Ariston geysers. Quote all 21 characters when you log a call.</p>
+  </section>
+
+  <section class="card" data-brand="kwikot">
     <h2>How the code works</h2>
     <div class="code-demo" aria-hidden="true"><span>11</span>-<span>K</span>-<span>5</span></div>
     <p style="margin-top:0"><b>11</b> is the month made (November). <b>K</b> is the year letter (2008). <b>5</b> is the tank warranty in years, counted from the manufacture month.</p>
@@ -229,7 +250,7 @@ ol.req span{color:var(--muted);font-size:.9rem}
     <table class="letters" id="tbl"></table>
   </section>
 
-  <p class="small" style="text-align:center">Kwikot code format from kwikot.com/consumer/faqs. Kwikot makes the final call on every claim.</p>
+  <p class="small" style="text-align:center" id="footer"></p>
 </main>
 
 <script src="decode.js"></script>
