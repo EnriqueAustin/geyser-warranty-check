@@ -8,7 +8,11 @@
 <meta name="theme-color" content="#0b5cab">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Geyser Check">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>
 :root{
   --bg:#f3f5f8; --card:#fff; --ink:#15202b; --muted:#5b6876; --line:#dde3ea;
@@ -109,6 +113,11 @@ ol.req span{color:var(--muted);font-size:.9rem}
 .pirb p{margin:0;flex:1 1 240px;min-width:0}
 .copy{min-height:36px;padding:6px 12px;font-size:.85rem}
 .contact .line .small{margin-left:auto}
+.install{display:flex;flex-wrap:wrap;gap:10px;align-items:center;border-color:var(--brand)}
+.install > div{flex:1 1 220px}
+.install .small{margin:2px 0 0}
+.install .primary{width:auto;margin:0;flex:0 0 auto}
+.install .secondary{min-height:48px}
 .brands{display:flex;gap:6px;padding:4px;background:var(--bg);border:1px solid var(--line);border-radius:10px;margin-bottom:14px}
 .brands button{flex:1;min-height:42px;padding:8px 10px;background:transparent;color:var(--muted);border-radius:7px}
 .brands button[aria-pressed="true"]{background:var(--brand);color:var(--brand-ink)}
@@ -125,6 +134,15 @@ ol.req span{color:var(--muted);font-size:.9rem}
 </header>
 
 <main>
+  <section id="installBox" class="card install" hidden>
+    <div>
+      <b>Put this on your phone</b>
+      <p class="small" id="installText">Install it like an app. It opens from your home screen and works with no signal.</p>
+    </div>
+    <button type="button" class="primary" id="installBtn" hidden>Install app</button>
+    <button type="button" class="secondary" id="installClose" aria-label="Hide">Hide</button>
+  </section>
+
   <form id="f" class="card" autocomplete="off">
     <div class="brands" id="brandPick" role="group" aria-label="Geyser brand">
       <button type="button" data-pick="kwikot" aria-pressed="true">Kwikot</button>

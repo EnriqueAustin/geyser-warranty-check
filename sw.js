@@ -1,7 +1,7 @@
 // Caches the app so it works in a roof space with no signal.
 // Bump VERSION whenever you change any file so phones pick up the update.
-const VERSION = "gwc-v4";
-const FILES = ["./", "index.html", "app.js", "decode.js", "manifest.webmanifest", "icon.svg"];
+const VERSION = "gwc-v5";
+const FILES = ["./", "index.html", "app.js", "decode.js", "manifest.webmanifest", "icon.svg", "icon-192.png", "icon-512.png", "icon-maskable-512.png", "apple-touch-icon.png"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(VERSION).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));

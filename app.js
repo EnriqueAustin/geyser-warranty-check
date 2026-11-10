@@ -223,6 +223,45 @@ let saved = null;
 try { saved = localStorage.getItem("gwc-brand"); } catch {}
 setBrand(saved || "kwikot");
 
+// ---- Install as an app ----
+// Android (Chrome, Samsung Internet): the browser offers an install prompt, shown by our button.
+// iPhone: Safari has no prompt, so explain Share > Add to Home Screen.
+(function () {
+  const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  let hidden = false;
+  try { hidden = localStorage.getItem("gwc-install-hidden") === "1"; } catch {}
+  if (standalone || hidden) return;
+
+  const box = $("installBox"), btn = $("installBtn");
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  if (ios) {
+    $("installText").innerHTML = /CriOS|FxiOS|EdgiOS/.test(navigator.userAgent)
+      ? "Open this page in <b>Safari</b>, tap the <b>Share</b> button, then <b>Add to Home Screen</b>."
+      : "Tap the <b>Share</b> button (square with an arrow) at the bottom, then <b>Add to Home Screen</b>.";
+    box.hidden = false;
+  }
+
+  let prompt = null;
+  addEventListener("beforeinstallprompt", e => {
+    e.preventDefault();
+    prompt = e;
+    btn.hidden = false;
+    box.hidden = false;
+  });
+  btn.addEventListener("click", async () => {
+    if (!prompt) return;
+    prompt.prompt();
+    await prompt.userChoice.catch(() => {});
+    prompt = null;
+    box.hidden = true;
+  });
+  addEventListener("appinstalled", () => { box.hidden = true; });
+  $("installClose").addEventListener("click", () => {
+    box.hidden = true;
+    try { localStorage.setItem("gwc-install-hidden", "1"); } catch {}
+  });
+})();
+
 // Works offline once loaded (only when served over https or localhost).
 if ("serviceWorker" in navigator && location.protocol !== "file:") {
   navigator.serviceWorker.register("sw.js").catch(() => {});

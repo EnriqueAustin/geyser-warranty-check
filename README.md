@@ -41,9 +41,16 @@ Then open http://localhost:5178.
 
 ## Put it on the team's phones
 
-Phones can't reach this PC. Host the folder (drag it onto Netlify Drop, or any static host). Each plumber then opens the link and taps "Add to Home Screen". Once loaded, it also works with no signal.
+The app is hosted free on GitHub Pages: **https://enriqueaustin.github.io/geyser-warranty-check/**
 
-When you change any file, bump `VERSION` in `sw.js` so phones pick up the update.
+Every push to `main` updates it. Send that link to each plumber:
+
+- **Android:** open the link in Chrome and tap **Install app** on the page, or use the ⋮ menu and choose **Install app** or **Add to Home screen**.
+- **iPhone:** open the link in **Safari**, tap **Share** and choose **Add to Home Screen**.
+
+It then opens from the home screen like any app, full screen, and works with no signal once it has been opened once.
+
+When you change any file, bump `VERSION` in `sw.js` so phones pick up the update. To redraw the PNG icons, run `node make-icons.js`.
 
 ## Files
 

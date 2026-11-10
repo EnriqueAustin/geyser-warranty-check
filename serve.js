@@ -1,7 +1,7 @@
 // Local server: node serve.js  ->  http://localhost:5178
 const http = require("http"), fs = require("fs"), path = require("path");
 const PORT = process.env.PORT || 5178, ROOT = __dirname;
-const TYPES = { ".html": "text/html", ".js": "text/javascript", ".svg": "image/svg+xml", ".webmanifest": "application/manifest+json", ".css": "text/css" };
+const TYPES = { ".html": "text/html", ".js": "text/javascript", ".svg": "image/svg+xml", ".webmanifest": "application/manifest+json", ".css": "text/css", ".png": "image/png" };
 http.createServer((req, res) => {
   let p = decodeURIComponent(req.url.split("?")[0]);
   if (p === "/") p = "/index.html";
