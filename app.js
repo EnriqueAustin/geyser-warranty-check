@@ -78,6 +78,16 @@ const fmt = d => d.toLocaleDateString("en-ZA", { day: "numeric", month: "long", 
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 let brand = "kwikot";
 let last = null;
+let example = true; // the result shown before anyone has checked a code
+
+const ICON = {
+  ok: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  bad: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  warn: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 6v8M12 18.5h.01"/></svg>',
+  phone: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.4 1.8.7 2.7a2 2 0 01-.5 2.1L8 9.8a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.4c.9.3 1.8.6 2.7.7a2 2 0 011.7 2z"/></svg>',
+  mail: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>',
+  web: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>',
+};
 const B = () => BRANDS[brand];
 
 function ticked() {
@@ -91,7 +101,7 @@ function render() {
   ["claimBox", "kwikotBox", "replaceBox"].forEach(id => $(id).hidden = true);
   if (!r) { out.innerHTML = ""; return; }
   if (!r.ok) {
-    out.innerHTML = `<div class="verdict err"><p class="big">Check the ${brand === "kwikot" ? "code" : "serial"}</p><p class="action" style="margin:0">${esc(r.error)}</p></div>`;
+    out.innerHTML = `<div class="verdict err"><div class="v-head" style="border-bottom:0"><span class="badge" aria-hidden="true">${ICON.warn}</span><div><p class="big">Check the ${brand === "kwikot" ? "code" : "serial"}</p><p class="action">${esc(r.error)}</p></div></div></div>`;
     return;
   }
 
@@ -113,26 +123,35 @@ function render() {
     if (r.daysLeft <= 90) action += ` Cover ends in ${r.daysLeft} day${r.daysLeft === 1 ? "" : "s"}, so log it today.`;
   }
 
-  const notes = r.notes.slice();
-  if (r.from === "installation") notes.push(`Warranty counted from the install date (${fmt(r.install)}). ${b.installNote}`);
-  if (!r.letterConfirmed) notes.push(`Year letter ${r.letter} follows Kwikot's letter sequence. If the geyser clearly doesn't look like a ${r.year} geyser, check the plate again.`);
-  risks.forEach(([, t]) => notes.push("Claim risk: " + t));
+  const notes = r.notes.map(n => ["", n]);
+  if (r.from === "installation") notes.push(["", `Warranty counted from the install date (${fmt(r.install)}). ${b.installNote}`]);
+  if (!r.letterConfirmed) notes.push(["", `Year letter ${r.letter} follows Kwikot's letter sequence. If the geyser clearly doesn't look like a ${r.year} geyser, check the plate again.`]);
+  risks.forEach(([, t]) => notes.push(["risk", "Claim risk: " + t]));
 
+  const row = (k, v) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`;
   out.innerHTML = `
     <div class="verdict ${cls}">
-      <p class="big">${esc(big)}</p>
-      <p class="action">${esc(action)}</p>
-      <dl class="facts">
-        <dt>Brand</dt><dd>${brand === "kwikot" ? "Kwikot" : "Ariston / Heat Tech"}</dd>
-        <dt>${brand === "kwikot" ? "Code" : "Serial"}</dt><dd>${esc(r.code)}</dd>
-        <dt>Made</dt><dd>${esc(r.madeText)}</dd>
-        <dt>Age</dt><dd>${esc(r.age)}</dd>
-        <dt>${brand === "kwikot" ? "Tank" : "Cylinder"} warranty</dt><dd>${r.years} years from ${r.from}</dd>
-        <dt>${r.covered ? "Covered until" : "Expired on"}</dt><dd>${fmt(r.expiry)}</dd>
-      </dl>
-      <p class="advice"><b>Advise the client:</b> ${esc(clientAdvice(r))}</p>
-      ${notes.length ? `<ul class="notes">${notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}
-      ${r.covered ? `<p class="small" style="margin:10px 0 0">${esc(b.cover)}</p>` : ""}
+      <div class="v-head">
+        <span class="badge" aria-hidden="true">${ICON[cls]}</span>
+        <div>
+          ${example ? '<span class="chip">Example</span>' : ""}
+          <p class="big">${esc(big)}</p>
+          <p class="action">${esc(action)}</p>
+        </div>
+      </div>
+      <div class="v-body">
+        <dl class="facts">
+          ${row("Brand", brand === "kwikot" ? "Kwikot" : "Ariston / Heat Tech")}
+          ${row(brand === "kwikot" ? "Code" : "Serial", r.code)}
+          ${row("Made", r.madeText)}
+          ${row("Age", r.age)}
+          ${row(brand === "kwikot" ? "Tank warranty" : "Cylinder warranty", `${r.years} years from ${r.from}`)}
+          ${row(r.covered ? "Covered until" : "Expired on", fmt(r.expiry))}
+        </dl>
+        <p class="advice"><b>Tell the client</b>${esc(clientAdvice(r))}</p>
+        ${notes.length ? `<ul class="notes">${notes.map(([c, n]) => `<li${c ? ` class="${c}"` : ""}>${esc(n)}</li>`).join("")}</ul>` : ""}
+        ${r.covered ? `<p class="cover">${esc(b.cover)}</p>` : ""}
+      </div>
     </div>`;
 
   $("claimBox").hidden = !r.covered;
@@ -143,7 +162,7 @@ function render() {
 // What the plumber tells the client.
 function clientAdvice(r) {
   const b = B();
-  const made = `this geyser was manufactured ${brand === "kwikot" ? "in" : "on"} ${r.madeText} and is ${r.age} old`;
+  const made = `This geyser was manufactured ${brand === "kwikot" ? "in" : "on"} ${r.madeText} and is ${r.age} old`;
   const from = r.from === "installation" ? ` from installation on ${fmt(r.install)}` : "";
   const part = brand === "kwikot" ? "tank" : "cylinder";
   if (r.covered) {
@@ -171,15 +190,19 @@ function setBrand(id) {
   $("claimHead").textContent = `Before you call it ${brand === "kwikot" ? "a Kwikot" : "an Ariston"} claim`;
   $("claimLead").textContent = `Tick anything that applies. ${b.name} can refuse the claim for these.`;
   $("claimNote").textContent = b.claimNote;
-  $("logHead").textContent = `Log the claim with ${brand === "kwikot" ? "Kwikot" : "Ariston / Heat Tech"}`;
+  $("logHead").textContent = `Log the claim with ${brand === "kwikot" ? "Kwikot" : "Ariston"}`;
   $("steps").innerHTML = b.steps.map(s => `<li>${s}</li>`).join("");
+  const copyBtn = v => `<button type="button" class="secondary copy" data-copy="${esc(v)}">Copy</button>`;
   $("contactLines").innerHTML = b.contacts.map(c => {
-    if (c.phone) return `<div class="line"><a href="tel:${c.phone.replace(/\s/g, "")}">Call ${esc(c.phone)}</a>${c.label ? `<span class="small">${esc(c.label)}</span>` : ""}<button type="button" class="secondary copy" data-copy="${esc(c.phone)}">Copy</button></div>`;
-    if (c.email) return `<div class="line"><a href="mailto:${esc(c.email)}">${esc(c.email)}</a><button type="button" class="secondary copy" data-copy="${esc(c.email)}">Copy</button></div>`;
-    return `<div class="line"><a href="${esc(c.link)}" target="_blank" rel="noopener">${esc(c.text)} ↗</a></div>`;
-  }).join("") + (b.hours ? `<p class="small" style="margin:8px 0 0">${esc(b.hours)}</p>` : "");
+    if (c.phone) return `<div class="line"><span class="ci" aria-hidden="true">${ICON.phone}</span><span class="txt"><a href="tel:${c.phone.replace(/\s/g, "")}">${esc(c.phone)}</a><span class="lbl">${esc(c.label || "Phone")}</span></span>${copyBtn(c.phone)}</div>`;
+    if (c.email) return `<div class="line"><span class="ci" aria-hidden="true">${ICON.mail}</span><span class="txt"><a href="mailto:${esc(c.email)}">${esc(c.email).replace("@", "@<wbr>")}</a><span class="lbl">Email</span></span>${copyBtn(c.email)}</div>`;
+    return `<div class="line"><span class="ci" aria-hidden="true">${ICON.web}</span><span class="txt"><a href="${esc(c.link)}" target="_blank" rel="noopener">${esc(c.text)} ↗</a><span class="lbl">Website</span></span></div>`;
+  }).join("");
+  $("hours").textContent = b.hours;
+  $("hours").hidden = !b.hours;
   $("footer").textContent = b.footer;
   try { localStorage.setItem("gwc-brand", brand); } catch {}
+  example = true;
   check(false);
 }
 
@@ -202,8 +225,8 @@ $("brandPick").addEventListener("click", e => {
   const btn = e.target.closest("[data-pick]");
   if (btn) setBrand(btn.dataset.pick);
 });
-$("f").addEventListener("submit", e => { e.preventDefault(); $(B().input).blur(); check(); });
-$("inst").addEventListener("change", () => check(false));
+$("f").addEventListener("submit", e => { e.preventDefault(); $(B().input).blur(); example = false; check(); });
+$("inst").addEventListener("change", () => { example = false; check(false); });
 
 // Kwikot letter table. Letters Kwikot has confirmed are highlighted.
 (function () {

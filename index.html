@@ -15,82 +15,140 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>
 :root{
-  --bg:#f3f5f8; --card:#fff; --ink:#15202b; --muted:#5b6876; --line:#dde3ea;
-  --brand:#0b5cab; --brand-ink:#fff;
-  --ok:#0f7a3d; --ok-bg:#e6f5ec; --bad:#b42318; --bad-bg:#fdecea; --warn:#9a5b00; --warn-bg:#fff4e0; --cold:#1f6fb2;
-  --focus:#1d7bf0;
+  --bg:#f2f4f7; --card:#fff; --sunk:#f6f8fa; --ink:#101828; --ink2:#344054; --muted:#667085; --line:#e4e7ec; --line2:#d0d5dd;
+  --brand:#0b5cab; --brand-2:#094a8a; --brand-ink:#fff; --brand-soft:#e8f1fb;
+  --ok:#067647; --ok-bg:#ecfdf3; --ok-line:#abefc6;
+  --bad:#b42318; --bad-bg:#fef3f2; --bad-line:#fecdca;
+  --warn:#b54708; --warn-bg:#fffaeb; --warn-line:#fedf89;
+  --cold:#1f6fb2; --focus:#2e90fa;
+  --shadow:0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.08);
+  --r:14px;
+  color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#0e1419; --card:#172028; --ink:#e7edf3; --muted:#9aa8b6; --line:#2a3642;
-    --brand:#3d8ee6; --brand-ink:#fff;
-    --ok:#4cc27e; --ok-bg:#12301f; --bad:#ff7a6e; --bad-bg:#3a1714; --warn:#f2b64c; --warn-bg:#36280d; --cold:#6cb4f0;
+    --bg:#0c1117; --card:#151c24; --sunk:#10161d; --ink:#f0f3f6; --ink2:#c9d1d9; --muted:#8b98a7; --line:#242e39; --line2:#33404d;
+    --brand:#3d8ee6; --brand-2:#2f7bd0; --brand-ink:#fff; --brand-soft:#132a44;
+    --ok:#47cd89; --ok-bg:#0f2a1d; --ok-line:#1c5a3b;
+    --bad:#fd8a7e; --bad-bg:#33150f; --bad-line:#6b2a20;
+    --warn:#fdb44b; --warn-bg:#2f2209; --warn-line:#6a4b10;
+    --cold:#6cb4f0; --shadow:0 1px 2px rgba(0,0,0,.4);
+    color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0e1419; --card:#172028; --ink:#e7edf3; --muted:#9aa8b6; --line:#2a3642;
-  --brand:#3d8ee6; --brand-ink:#fff;
-  --ok:#4cc27e; --ok-bg:#12301f; --bad:#ff7a6e; --bad-bg:#3a1714; --warn:#f2b64c; --warn-bg:#36280d; --cold:#6cb4f0;
+  --bg:#0c1117; --card:#151c24; --sunk:#10161d; --ink:#f0f3f6; --ink2:#c9d1d9; --muted:#8b98a7; --line:#242e39; --line2:#33404d;
+  --brand:#3d8ee6; --brand-2:#2f7bd0; --brand-ink:#fff; --brand-soft:#132a44;
+  --ok:#47cd89; --ok-bg:#0f2a1d; --ok-line:#1c5a3b;
+  --bad:#fd8a7e; --bad-bg:#33150f; --bad-line:#6b2a20;
+  --warn:#fdb44b; --warn-bg:#2f2209; --warn-line:#6a4b10;
+  --cold:#6cb4f0; --shadow:0 1px 2px rgba(0,0,0,.4);
+  color-scheme:dark;
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-header{background:var(--brand);color:var(--brand-ink);padding:14px 16px calc(14px) ;padding-top:max(14px,env(safe-area-inset-top))}
-header h1{margin:0;font-size:1.15rem}
-header p{margin:2px 0 0;font-size:.85rem;opacity:.85}
-main{max-width:640px;margin:0 auto;padding:16px 16px 48px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
-h2{font-size:1rem;margin:0 0 10px}
-label{display:block;font-weight:600;margin:0 0 6px}
-.hint{color:var(--muted);font-size:.88rem;margin:4px 0 0}
-input[type=text],input[type=date],textarea{width:100%;font:inherit;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
-#code{font-size:1.6rem;font-weight:700;letter-spacing:.06em;text-align:center;text-transform:uppercase}
-input:focus,textarea:focus,button:focus-visible{outline:3px solid var(--focus);outline-offset:1px}
-button,.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font:inherit;font-weight:700;border:0;border-radius:8px;padding:13px 16px;cursor:pointer;text-decoration:none;min-height:48px}
-.primary{background:var(--brand);color:var(--brand-ink);width:100%;font-size:1.05rem;margin-top:12px}
-.secondary{background:var(--bg);color:var(--ink);border:1px solid var(--line)}
-.row{display:flex;gap:8px;flex-wrap:wrap}
-.row > *{flex:1 1 140px}
+html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-variant-numeric:tabular-nums}
+svg{flex:none}
 
-.verdict{border-radius:12px;padding:16px;margin-bottom:14px;border:2px solid}
-.verdict.ok{background:var(--ok-bg);border-color:var(--ok)}
-.verdict.bad{background:var(--bad-bg);border-color:var(--bad)}
-.verdict.warn{background:var(--warn-bg);border-color:var(--warn)}
-.verdict.err{background:var(--warn-bg);border-color:var(--warn)}
-.big{font-size:1.5rem;font-weight:800;margin:0 0 4px}
-.ok .big{color:var(--ok)} .bad .big{color:var(--bad)} .warn .big,.err .big{color:var(--warn)}
-.action{font-size:1.05rem;font-weight:600;margin:0 0 12px}
-dl.facts{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0}
-dl.facts dt{color:var(--muted)} dl.facts dd{margin:0;font-weight:600}
-.notes{margin:12px 0 0;padding-left:18px;font-size:.92rem}
-.notes li{margin:3px 0}
-.flag{display:inline-block;font-size:.75rem;font-weight:700;padding:2px 7px;border-radius:99px;background:var(--bg);border:1px solid var(--line);color:var(--muted);vertical-align:middle}
+/* App bar */
+header{background:var(--brand);color:var(--brand-ink);padding:12px 16px;padding-top:max(12px,env(safe-area-inset-top));padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+.bar{max-width:640px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.logo{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.16);display:grid;place-items:center}
+header h1{margin:0;font-size:1.06rem;line-height:1.2;letter-spacing:-.01em}
+header p{margin:2px 0 0;font-size:.8rem;opacity:.85}
 
-.checks label{display:flex;gap:10px;align-items:flex-start;font-weight:400;padding:10px 0;border-top:1px solid var(--line);margin:0;cursor:pointer}
-.checks label:first-of-type{border-top:0}
-.checks input{width:22px;height:22px;flex:none;margin-top:1px;accent-color:var(--bad)}
-.checks b{display:block}
-.checks span span{color:var(--muted);font-size:.88rem}
-ol.steps,ul.plain{margin:0;padding-left:20px} ol.steps li,ul.plain li{margin:5px 0}
-.contact .line{display:flex;align-items:center;gap:8px;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line)}
-.contact .line:first-child{border-top:0}
-.contact a{color:var(--brand);font-weight:700}
-
-table.letters{border-collapse:collapse;width:100%;font-size:.9rem}
-table.letters td{padding:5px 4px;border-bottom:1px solid var(--line);text-align:center}
-table.letters td.l{font-weight:800}
-table.letters td.now{background:var(--ok-bg)}
-.code-demo{display:flex;gap:6px;justify-content:center;font-size:1.6rem;font-weight:800;margin:6px 0 10px}
-.code-demo span{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:2px 10px}
+main{max-width:640px;margin:0 auto;padding:16px;padding-bottom:max(40px,env(safe-area-inset-bottom));padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 16px;margin-bottom:14px;box-shadow:var(--shadow)}
+h2{font-size:1.02rem;line-height:1.3;margin:0 0 4px;letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
+h2 .ic{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:var(--brand-soft);color:var(--brand)}
+.lead{color:var(--muted);font-size:.9rem;margin:0 0 12px}
+label{display:block;font-weight:600;font-size:.92rem;color:var(--ink2);margin:0 0 6px}
+.hint{color:var(--muted);font-size:.85rem;margin:6px 0 0}
 .small{font-size:.85rem;color:var(--muted)}
-details{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
-summary{cursor:pointer;font-weight:600;color:var(--brand);padding:4px 0}
-details > div{margin-top:10px}
-.advice{margin:12px 0 0;padding-top:12px;border-top:1px solid var(--line)}
-.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.85rem;color:var(--muted);margin-bottom:8px}
-.legend i{display:inline-block;width:22px;height:0;border-top:4px solid;vertical-align:middle;margin-right:6px}
-.diagram{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
-.diagram svg{display:block;width:100%;min-width:520px;height:auto}
+input[type=text],input[type=date]{width:100%;font:inherit;font-size:16px;padding:12px 14px;border:1px solid var(--line2);border-radius:10px;background:var(--card);color:var(--ink);-webkit-appearance:none;appearance:none;min-height:48px}
+input::placeholder{color:var(--muted);opacity:.6}
+#code,#serial{font-weight:700;text-align:center;text-transform:uppercase;font-family:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace}
+#code{font-size:1.7rem;letter-spacing:.12em;padding:10px}
+#serial{font-size:1.08rem;letter-spacing:.03em}
+input:focus{outline:none;border-color:var(--focus);box-shadow:0 0 0 4px color-mix(in srgb,var(--focus) 22%,transparent)}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+button,.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-weight:650;border:0;border-radius:10px;padding:12px 16px;cursor:pointer;text-decoration:none;min-height:48px;touch-action:manipulation}
+.primary{background:var(--brand);color:var(--brand-ink);width:100%;font-size:1.05rem;margin-top:16px;box-shadow:0 1px 2px rgba(16,24,40,.12)}
+.primary:active{background:var(--brand-2)}
+.secondary{background:var(--card);color:var(--ink);border:1px solid var(--line2)}
+.secondary:active{background:var(--sunk)}
+
+/* Brand picker */
+.brands{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;background:var(--sunk);border:1px solid var(--line);border-radius:12px;margin-bottom:16px}
+.brands button{flex-direction:column;gap:0;min-height:54px;padding:6px 8px;background:transparent;color:var(--muted);border-radius:9px;line-height:1.2}
+.brands button b{font-size:1rem;color:inherit}
+.brands button span{font-size:.75rem;font-weight:500;opacity:.85}
+.brands button[aria-pressed="true"]{background:var(--card);color:var(--brand);box-shadow:0 1px 3px rgba(16,24,40,.12)}
+
+/* Install-date expander */
+details.more{margin-top:14px;border-top:1px solid var(--line);padding-top:6px}
+details.more summary{list-style:none;cursor:pointer;font-weight:600;font-size:.92rem;color:var(--brand);padding:8px 0;display:flex;align-items:center;gap:8px;min-height:44px}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary .chev{transition:transform .15s}
+details.more[open] summary .chev{transform:rotate(90deg)}
+details.more > div{padding:4px 0 2px}
+
+/* Result */
+.verdict{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-bottom:14px;box-shadow:var(--shadow);scroll-margin-top:12px}
+.v-head{display:flex;gap:12px;align-items:flex-start;padding:16px;border-bottom:1px solid}
+.ok .v-head{background:var(--ok-bg);border-color:var(--ok-line)}
+.bad .v-head{background:var(--bad-bg);border-color:var(--bad-line)}
+.warn .v-head,.err .v-head{background:var(--warn-bg);border-color:var(--warn-line)}
+.badge{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff;flex:none}
+.ok .badge{background:var(--ok)} .bad .badge{background:var(--bad)} .warn .badge,.err .badge{background:var(--warn)}
+:root[data-theme="dark"] .badge{color:#0c1117}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .badge{color:#0c1117}}
+.big{font-size:1.3rem;font-weight:800;line-height:1.2;margin:0 0 4px;letter-spacing:-.015em}
+.ok .big{color:var(--ok)} .bad .big{color:var(--bad)} .warn .big,.err .big{color:var(--warn)}
+.action{font-size:.98rem;font-weight:600;margin:0;color:var(--ink)}
+.chip{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:99px;background:var(--card);border:1px solid var(--line2);color:var(--muted);margin-bottom:6px}
+.v-body{padding:4px 16px 16px}
+dl.facts{margin:0}
+dl.facts div{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+dl.facts dt{color:var(--muted);font-size:.92rem;white-space:nowrap}
+dl.facts dd{margin:0;font-weight:650;text-align:right;overflow-wrap:anywhere}
+.advice{margin:14px 0 0;padding:12px 14px;background:var(--sunk);border-radius:10px;border-left:3px solid var(--brand);font-size:.95rem}
+.advice b{display:block;font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.notes{margin:14px 0 0;padding:0;list-style:none;font-size:.9rem;color:var(--ink2)}
+.notes li{position:relative;padding-left:22px;margin:6px 0}
+.notes li::before{content:"i";position:absolute;left:0;top:2px;width:15px;height:15px;border-radius:50%;background:var(--line);color:var(--muted);font:700 10px/15px Georgia,serif;text-align:center}
+.notes li.risk::before{content:"!";background:var(--warn);color:#fff;font-family:inherit}
+.cover{margin:12px 0 0;font-size:.85rem;color:var(--muted)}
+
+/* Claim checks */
+.checks label{display:flex;gap:12px;align-items:flex-start;font-weight:400;font-size:1rem;color:var(--ink);padding:12px 0;border-top:1px solid var(--line);margin:0;cursor:pointer}
+.checks label:first-of-type{border-top:0;padding-top:4px}
+.checks input{width:22px;height:22px;flex:none;margin:1px 0 0;accent-color:var(--warn)}
+.checks b{display:block;font-weight:650;font-size:.95rem}
+.checks span span{display:block;color:var(--muted);font-size:.85rem;margin-top:2px}
+.note{margin:12px 0 0;padding:10px 12px;background:var(--sunk);border-radius:10px;font-size:.85rem;color:var(--muted)}
+
+/* Claim steps and contacts */
+ol.steps{margin:0;padding:0;list-style:none;counter-reset:s}
+ol.steps li{counter-increment:s;position:relative;padding:0 0 12px 36px;font-size:.95rem}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:24px;height:24px;border-radius:50%;background:var(--brand-soft);color:var(--brand);font-weight:800;font-size:.8rem;display:grid;place-items:center}
+.contacts{margin-top:6px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.contacts .line{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 12px;border-top:1px solid var(--line);min-height:56px}
+.contacts .line:first-child{border-top:0}
+.contacts .ci{width:32px;height:32px;border-radius:8px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;flex:none}
+.contacts .txt{flex:1;min-width:0}
+.contacts a{color:var(--brand);font-weight:650;text-decoration:none;overflow-wrap:break-word}
+.contacts .lbl{display:block;font-size:.75rem;color:var(--muted)}
+.copy{min-height:40px;padding:6px 12px;font-size:.82rem;flex:none}
+.hours{margin:10px 0 0;font-size:.82rem;color:var(--muted)}
+
+/* SANS checklist */
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.82rem;color:var(--muted);margin:0 0 8px}
+.legend i{display:inline-block;width:20px;height:0;border-top:4px solid;vertical-align:middle;margin-right:6px}
+.diagram{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;background:var(--sunk)}
+.diagram svg{display:block;width:100%;min-width:560px;height:auto}
+.swipe{display:none;font-size:.78rem;color:var(--muted);margin:6px 0 0;text-align:center}
+@media (max-width:600px){.swipe{display:block}}
 .diagram text{font-family:inherit;font-size:12px;fill:var(--ink)}
 .diagram .num{font-weight:800;font-size:12px;fill:#fff;text-anchor:middle;dominant-baseline:central}
 .diagram .dot{fill:var(--brand)}
@@ -100,72 +158,100 @@ details > div{margin-top:10px}
 .diagram .tank{fill:var(--card);stroke:var(--ink);stroke-width:2}
 .diagram .tray{fill:none;stroke:var(--muted);stroke-width:3}
 .diagram .wood{fill:#b07a3c;opacity:.7}
-.diagram .wall{fill:var(--line)}
+.diagram .wall{fill:var(--line2)}
 .diagram .valve{fill:var(--card);stroke:var(--ink);stroke-width:2}
 .diagram .cable{stroke:var(--muted);stroke-width:1.5;fill:none;stroke-dasharray:2 3}
 .diagram .faint{fill:var(--muted);font-size:11px}
-ol.req{margin:12px 0 8px;padding-left:28px}
-ol.req li{margin:8px 0;padding-left:4px}
-ol.req li::marker{font-weight:800;color:var(--brand)}
-ol.req b{display:block}
-ol.req span{color:var(--muted);font-size:.9rem}
-.pirb{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:14px;margin-top:12px}
-.pirb p{margin:0;flex:1 1 240px;min-width:0}
-.copy{min-height:36px;padding:6px 12px;font-size:.85rem}
-.contact .line .small{margin-left:auto}
-.install{display:flex;flex-wrap:wrap;gap:10px;align-items:center;border-color:var(--brand)}
-.install > div{flex:1 1 220px}
-.install .small{margin:2px 0 0}
-.install .primary{width:auto;margin:0;flex:0 0 auto}
-.install .secondary{min-height:48px}
-.brands{display:flex;gap:6px;padding:4px;background:var(--bg);border:1px solid var(--line);border-radius:10px;margin-bottom:14px}
-.brands button{flex:1;min-height:42px;padding:8px 10px;background:transparent;color:var(--muted);border-radius:7px}
-.brands button[aria-pressed="true"]{background:var(--brand);color:var(--brand-ink)}
-#serial{font-size:1.15rem;font-weight:700;letter-spacing:.04em;text-align:center;text-transform:uppercase}
-.serial-demo{flex-wrap:wrap;font-size:1.15rem}
-.code-demo span.hl{background:var(--ok-bg);border-color:var(--ok)}
+ol.req{margin:14px 0 6px;padding:0;list-style:none;counter-reset:q}
+ol.req li{counter-increment:q;position:relative;padding:10px 0 10px 38px;border-top:1px solid var(--line)}
+ol.req li:first-child{border-top:0}
+ol.req li::before{content:counter(q);position:absolute;left:0;top:10px;width:26px;height:26px;border-radius:50%;background:var(--brand);color:#fff;font-weight:800;font-size:.8rem;display:grid;place-items:center}
+ol.req b{display:block;font-weight:650;font-size:.95rem}
+ol.req span{display:block;color:var(--muted);font-size:.85rem;margin-top:1px}
+.pirb{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;background:var(--sunk);border-radius:12px;padding:14px;margin-top:12px}
+.pirb p{margin:0;flex:1 1 220px;min-width:0;font-size:.92rem}
+.pirb .small{display:block;margin-top:2px}
+.pirb .btn{flex:1 1 auto}
+
+/* Reference (collapsible) */
+details.ref{padding:0}
+details.ref > summary{list-style:none;cursor:pointer;padding:16px;display:flex;align-items:center;gap:10px;font-weight:700;min-height:56px}
+details.ref > summary::-webkit-details-marker{display:none}
+details.ref > summary .chev{margin-left:auto;color:var(--muted);transition:transform .15s}
+details.ref[open] > summary .chev{transform:rotate(90deg)}
+details.ref > div{padding:0 16px 16px}
+.code-demo{display:flex;gap:6px;justify-content:center;align-items:center;font:800 1.5rem ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace;margin:4px 0 12px;color:var(--muted)}
+.code-demo span{background:var(--sunk);border:1px solid var(--line2);border-radius:8px;padding:4px 10px;color:var(--ink)}
+.serial-demo{flex-wrap:wrap;font-size:1.02rem}
+.code-demo span.hl{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+table.letters{border-collapse:collapse;width:100%;font-size:.88rem;margin-top:8px}
+table.letters td{padding:6px 2px;border-bottom:1px solid var(--line);text-align:center}
+table.letters td.l{font-weight:800}
+table.letters td.now{background:var(--ok-bg);color:var(--ok);font-weight:700}
+
+/* Install banner */
+.install{display:flex;gap:12px;align-items:flex-start;padding:14px;background:var(--brand-soft);border-color:transparent;box-shadow:none}
+.install .ii{width:36px;height:36px;border-radius:10px;background:var(--brand);color:#fff;display:grid;place-items:center;flex:none}
+.install .it{flex:1;min-width:0}
+.install .it > b{display:block;font-size:.95rem}
+.install p{margin:2px 0 0;font-size:.85rem;color:var(--ink2)}
+.install .primary{margin-top:10px;min-height:44px;font-size:.95rem}
+.install .x{min-height:36px;width:36px;padding:0;background:transparent;color:var(--muted);border-radius:8px;margin:-6px -6px 0 0}
+
+footer{max-width:640px;margin:0 auto;padding:0 16px 32px;text-align:center;font-size:.78rem;color:var(--muted)}
 [hidden]{display:none!important}
+@media (min-width:600px){ main{padding-top:24px} .card{padding:20px} .v-head{padding:18px 20px} .v-body{padding:4px 20px 20px} }
+@media (prefers-reduced-motion: reduce){ *{transition:none!important;scroll-behavior:auto!important} }
 </style>
 </head>
 <body>
 <header>
-  <h1>Geyser Warranty Check</h1>
-  <p>Kwikot and Ariston / Heat Tech geysers · internal team tool</p>
+  <div class="bar">
+    <div class="logo" aria-hidden="true">
+      <svg width="28" height="28" viewBox="0 0 64 64"><rect x="20" y="8" width="24" height="48" rx="12" fill="#fff"/><path d="M26 33l5 5 8-10" fill="none" stroke="#0f7a3d" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div>
+      <h1>Geyser Warranty Check</h1>
+      <p>Kwikot · Ariston / Heat Tech</p>
+    </div>
+  </div>
 </header>
 
 <main>
   <section id="installBox" class="card install" hidden>
-    <div>
+    <div class="ii" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></div>
+    <div class="it">
       <b>Put this on your phone</b>
-      <p class="small" id="installText">Install it like an app. It opens from your home screen and works with no signal.</p>
+      <p id="installText">Install it like an app. It opens from your home screen and works with no signal.</p>
+      <button type="button" class="primary" id="installBtn" hidden>Install app</button>
     </div>
-    <button type="button" class="primary" id="installBtn" hidden>Install app</button>
-    <button type="button" class="secondary" id="installClose" aria-label="Hide">Hide</button>
+    <button type="button" class="x" id="installClose" aria-label="Hide this message"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   </section>
 
   <form id="f" class="card" autocomplete="off">
     <div class="brands" id="brandPick" role="group" aria-label="Geyser brand">
-      <button type="button" data-pick="kwikot" aria-pressed="true">Kwikot</button>
-      <button type="button" data-pick="ariston" aria-pressed="false">Ariston / Heat Tech</button>
+      <button type="button" data-pick="kwikot" aria-pressed="true"><b>Kwikot</b><span>Code like 11-K-5</span></button>
+      <button type="button" data-pick="ariston" aria-pressed="false"><b>Ariston</b><span>Also Heat Tech</span></button>
     </div>
 
     <div data-brand="kwikot">
       <label for="code">Code on the serial plate</label>
-      <input id="code" type="text" inputmode="text" placeholder="11-K-5" value="03-V-5" maxlength="10" autocapitalize="characters" spellcheck="false">
-      <p class="hint">Short code on the serial plate sticker, next to the element cover. Month, letter, years.</p>
+      <input id="code" type="text" inputmode="text" placeholder="11-K-5" value="03-V-5" maxlength="10" autocapitalize="characters" autocorrect="off" spellcheck="false" enterkeyhint="go">
+      <p class="hint">On the serial plate sticker, next to the element cover: month, year letter, warranty years.</p>
     </div>
 
     <div data-brand="ariston" hidden>
       <label for="serial">Serial number on the label</label>
-      <input id="serial" type="text" inputmode="text" placeholder="3680036 Z2 20265 1003658" value="3680036 Z2 20265 1003658" maxlength="32" autocapitalize="characters" spellcheck="false">
-      <p class="hint">The 21-character number above the barcode on the green serial label. Type it with or without spaces.</p>
+      <input id="serial" type="text" inputmode="text" placeholder="3680036 Z2 20265 1003658" value="3680036 Z2 20265 1003658" maxlength="32" autocapitalize="characters" autocorrect="off" spellcheck="false" enterkeyhint="go">
+      <p class="hint">The 21 characters above the barcode on the green label. Spaces are optional.</p>
     </div>
 
-    <details>
-      <summary>Have proof of installation? Add the install date</summary>
+    <details class="more">
+      <summary><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>Have proof of installation? Add the date</summary>
       <div>
-        <label for="inst">Installation date <span class="hint">(warranty then runs from this date)</span></label>
+        <label for="inst">Installation date</label>
         <input id="inst" type="date">
+        <p class="hint">Warranty then runs from this date instead of the manufacture date.</p>
       </div>
     </details>
 
@@ -175,21 +261,23 @@ ol.req span{color:var(--muted);font-size:.9rem}
   <div id="out" aria-live="polite"></div>
 
   <section id="claimBox" class="card" hidden>
-    <h2 id="claimHead">Before you call it a Kwikot claim</h2>
-    <p class="hint" style="margin-top:-4px" id="claimLead"></p>
+    <h2><span class="ic" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg></span><span id="claimHead">Before you call it a claim</span></h2>
+    <p class="lead" id="claimLead"></p>
     <div class="checks" id="checks"></div>
-    <p class="small" id="claimNote"></p>
+    <p class="note" id="claimNote"></p>
   </section>
 
-  <section id="kwikotBox" class="card contact" hidden>
-    <h2 id="logHead">Log the claim with Kwikot</h2>
+  <section id="kwikotBox" class="card" hidden>
+    <h2><span class="ic" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 01-2 2H6a2 2 0 01-2-2V5a2 2 0 012-2h9"/></svg></span><span id="logHead">Log the claim</span></h2>
+    <p class="lead">Do it from site, before you leave.</p>
     <ol class="steps" id="steps"></ol>
-    <div id="contactLines" style="margin-top:10px"></div>
+    <div class="contacts" id="contactLines"></div>
+    <p class="hours" id="hours" hidden></p>
   </section>
 
   <section id="replaceBox" class="card" hidden>
-    <h2>We replace it: must meet SANS 10254</h2>
-    <p class="hint" style="margin-top:-4px">Install the new geyser like this. Numbers on the diagram match the list.</p>
+    <h2><span class="ic" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 00-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 005.4-5.4l-2.5 2.5-2.4-.6-.6-2.4 2.5-2.5z"/></svg></span>We replace it: SANS 10254</h2>
+    <p class="lead">Install the new geyser like this. Numbers on the diagram match the list.</p>
     <div class="legend"><span><i style="border-color:var(--cold)"></i>Cold</span><span><i style="border-color:var(--bad)"></i>Hot</span><span><i style="border-color:var(--muted);border-top-style:dashed"></i>Overflow to outside</span></div>
     <div class="diagram">
       <svg viewBox="0 0 640 380" role="img" aria-label="Horizontal geyser in a roof space installed to SANS 10254, with numbered parts">
@@ -233,6 +321,7 @@ ol.req span{color:var(--muted);font-size:.9rem}
         <g><circle class="dot" cx="166" cy="318" r="10"/><text class="num" x="166" y="318">11</text></g>
       </svg>
     </div>
+    <p class="swipe">Swipe the diagram sideways to see all of it</p>
     <ol class="req">
       <li><b>Isolating valve</b><span>Stopcock on the cold supply so the geyser can be shut off on its own.</span></li>
       <li><b>Pressure control valve</b><span>Rated for the geyser (400 or 600 kPa, see the serial plate). New or genuine, not remanufactured.</span></li>
@@ -246,30 +335,34 @@ ol.req span{color:var(--muted);font-size:.9rem}
       <li><b>Electrical isolator</b><span>Wired by a registered electrician, who issues the electrical CoC.</span></li>
       <li><b>Supports</b><span>Tray on timber beams over load-bearing walls. Industry guidance: at least 114 × 38 mm, grade 5, no more than 500 mm apart.</span></li>
     </ol>
-    <p class="small">Simplified layout for a horizontal geyser in a roof space. Exact positions vary by model; follow SANS 10254 and the manufacturer's installation manual.</p>
+    <p class="small" style="margin:0">Simplified layout for a horizontal geyser in a roof space. Exact positions vary by model; follow SANS 10254 and the manufacturer's installation manual.</p>
     <div class="pirb">
-      <p><b>Plumbing Certificate of Compliance</b><br><span class="small">After installing, the PIRB-registered plumber issues a PIRB CoC and logs it within 5 days. Give the client a copy; insurers and manufacturers can ask for it.</span></p>
+      <p><b>Plumbing Certificate of Compliance</b><span class="small">After installing, the PIRB-registered plumber issues a PIRB CoC and logs it within 5 days. Give the client a copy; insurers and manufacturers can ask for it.</span></p>
       <a class="btn secondary" href="https://www.pirb.co.za" target="_blank" rel="noopener">PIRB CoC website ↗</a>
     </div>
   </section>
 
-  <section class="card" data-brand="ariston" hidden>
-    <h2>How the Ariston serial works</h2>
-    <div class="code-demo serial-demo" aria-hidden="true"><span>3680036</span><span>Z2</span><span class="hl">20265</span><span>1003658</span></div>
-    <p style="margin-top:0">The highlighted group is the manufacture date: <b>20</b> is the year (2020) and <b>265</b> is the day of that year (21 September). The first group is the product reference and the last is a random number.</p>
-    <p class="small">The cylinder has 5 years' warranty from the manufacture date, or from the purchase or installation date if the client has proof. The same label format is used on Heat Tech and Ariston geysers. Quote all 21 characters when you log a call.</p>
-  </section>
+  <details class="card ref" data-brand="ariston" hidden>
+    <summary><span class="ic" aria-hidden="true" style="width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:var(--brand-soft);color:var(--brand)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span>How the Ariston serial works<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></summary>
+    <div>
+      <div class="code-demo serial-demo" aria-hidden="true"><span>3680036</span><span>Z2</span><span class="hl">20265</span><span>1003658</span></div>
+      <p style="margin-top:0">The highlighted group is the manufacture date: <b>20</b> is the year (2020) and <b>265</b> is the day of that year (21 September). The first group is the product reference and the last is a random number.</p>
+      <p class="small" style="margin-bottom:0">The cylinder has 5 years' warranty from the manufacture date, or from the purchase or installation date if the client has proof. The same label format is used on Heat Tech and Ariston geysers. Quote all 21 characters when you log a call.</p>
+    </div>
+  </details>
 
-  <section class="card" data-brand="kwikot">
-    <h2>How the code works</h2>
-    <div class="code-demo" aria-hidden="true"><span>11</span>-<span>K</span>-<span>5</span></div>
-    <p style="margin-top:0"><b>11</b> is the month made (November). <b>K</b> is the year letter (2008). <b>5</b> is the tank warranty in years, counted from the manufacture month.</p>
-    <p class="small">O and Q aren't used. Letters repeat every 24 years, so the tool picks the most recent year that isn't in the future. Highlighted letters are confirmed by Kwikot; the rest are calculated from them.</p>
-    <table class="letters" id="tbl"></table>
-  </section>
-
-  <p class="small" style="text-align:center" id="footer"></p>
+  <details class="card ref" data-brand="kwikot">
+    <summary><span class="ic" aria-hidden="true" style="width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:var(--brand-soft);color:var(--brand)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span>How the Kwikot code works<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></summary>
+    <div>
+      <div class="code-demo" aria-hidden="true"><span>11</span>-<span>K</span>-<span>5</span></div>
+      <p style="margin-top:0"><b>11</b> is the month made (November). <b>K</b> is the year letter (2008). <b>5</b> is the tank warranty in years, counted from the manufacture month.</p>
+      <p class="small">O and Q aren't used. Letters repeat every 24 years, so the tool picks the most recent year that isn't in the future. Highlighted letters are confirmed by Kwikot; the rest are calculated from them.</p>
+      <table class="letters" id="tbl"></table>
+    </div>
+  </details>
 </main>
+
+<footer id="footer"></footer>
 
 <script src="decode.js"></script>
 <script src="app.js"></script>
