@@ -228,16 +228,20 @@ $("brandPick").addEventListener("click", e => {
 $("f").addEventListener("submit", e => { e.preventDefault(); $(B().input).blur(); example = false; check(); });
 $("inst").addEventListener("change", () => { example = false; check(false); });
 
-// Kwikot letter table. Letters Kwikot has confirmed are highlighted.
+// Kwikot letter table: both years each letter stands for. Confirmed years are highlighted,
+// years still to come are faded.
 (function () {
-  const today = new Date();
-  const cells = [...GeyserCode.LETTERS].map(l => {
-    const y = GeyserCode.yearFor(l, 1, today);
-    const c = GeyserCode.CONFIRMED[l] ? ' class="now"' : "";
-    return `<td class="l"${c}>${l}</td><td${c}>${y}</td>`;
+  const G = GeyserCode, thisYear = new Date().getFullYear();
+  const cells = [...G.LETTERS].map((l, i) => {
+    const conf = G.CONFIRMED[l];
+    const yrs = [G.BASE + i, G.BASE + i + G.CYCLE].map(y => {
+      const cls = [conf && conf.year === y ? "now" : "", y > thisYear ? "future" : ""].filter(Boolean).join(" ");
+      return `<span${cls ? ` class="${cls}"` : ""}>${y}</span>`;
+    }).join("");
+    return `<td class="l">${l}</td><td class="y">${yrs}</td>`;
   });
   let rows = "";
-  for (let i = 0; i < cells.length; i += 4) rows += `<tr>${cells.slice(i, i + 4).join("")}</tr>`;
+  for (let i = 0; i < cells.length; i += 3) rows += `<tr>${cells.slice(i, i + 3).join("")}</tr>`;
   $("tbl").innerHTML = rows;
 })();
 

@@ -14,7 +14,7 @@ Brands covered: **Kwikot** and **Ariston / Heat Tech**.
 
 From kwikot.com/consumer/faqs: the code looks like `11-K-5`. The first number is the month made, the letter is the year made, and the last number is the tank warranty in years. Cover runs from the manufacture date, to the end of that month N years later.
 
-Kwikot confirms that "D" = 2025. The other letters follow the same sequence (no O or Q, repeating every 24 years). The tool picks the most recent year that isn't in the future.
+Confirmed letters: D = 2025 (Kwikot FAQ), and E = 2026, F = 2027, G = 2028, H = 2029, I = 2030 (Kwikot's letter list). The other letters follow the same sequence (no O or Q, repeating every 24 years). The tool picks the most recent year that isn't in the future, so it keeps working past 2030 without changes. To add newly confirmed letters, add them to `CONFIRMED` in `decode.js`.
 
 ### Ariston / Heat Tech
 
