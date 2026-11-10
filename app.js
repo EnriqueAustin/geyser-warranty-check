@@ -224,7 +224,8 @@ try { saved = localStorage.getItem("gwc-brand"); } catch {}
 setBrand(saved || "kwikot");
 
 // ---- Install as an app ----
-// Android (Chrome, Samsung Internet): the browser offers an install prompt, shown by our button.
+// Android: Chrome may offer an install prompt (shown by our button). Not every browser or
+// visit gets one, so Android always gets the menu steps too.
 // iPhone: Safari has no prompt, so explain Share > Add to Home Screen.
 (function () {
   const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
@@ -233,11 +234,18 @@ setBrand(saved || "kwikot");
   if (standalone || hidden) return;
 
   const box = $("installBox"), btn = $("installBtn");
-  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const ua = navigator.userAgent;
+  const ios = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const android = /android/i.test(ua);
   if (ios) {
-    $("installText").innerHTML = /CriOS|FxiOS|EdgiOS/.test(navigator.userAgent)
+    $("installText").innerHTML = /CriOS|FxiOS|EdgiOS/.test(ua)
       ? "Open this page in <b>Safari</b>, tap the <b>Share</b> button, then <b>Add to Home Screen</b>."
       : "Tap the <b>Share</b> button (square with an arrow) at the bottom, then <b>Add to Home Screen</b>.";
+    box.hidden = false;
+  } else if (android) {
+    $("installText").innerHTML = /SamsungBrowser/.test(ua)
+      ? "Tap the <b>menu</b> (☰) at the bottom, then <b>Add page to</b> › <b>Home screen</b>."
+      : "In Chrome, tap the <b>⋮</b> menu (top right), then <b>Install app</b> or <b>Add to Home screen</b>.";
     box.hidden = false;
   }
 

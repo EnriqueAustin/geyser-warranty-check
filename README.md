@@ -41,11 +41,11 @@ Then open http://localhost:5178.
 
 ## Put it on the team's phones
 
-The app is hosted free on GitHub Pages: **https://enriqueaustin.github.io/geyser-warranty-check/**
+The app is hosted on Netlify: **https://wfhgeyserchecker.netlify.app/**
 
-Every push to `main` updates it. Send that link to each plumber:
+Netlify is linked to this GitHub repo, so every push to `main` updates it. `_headers` sets the headers phones need. Send the link to each plumber:
 
-- **Android:** open the link in Chrome and tap **Install app** on the page, or use the ⋮ menu and choose **Install app** or **Add to Home screen**.
+- **Android:** open the link in Chrome. Tap **Install app** if it shows, or use the ⋮ menu and choose **Install app** or **Add to Home screen**. On Samsung Internet: menu ☰, **Add page to**, **Home screen**.
 - **iPhone:** open the link in **Safari**, tap **Share** and choose **Add to Home Screen**.
 
 It then opens from the home screen like any app, full screen, and works with no signal once it has been opened once.
