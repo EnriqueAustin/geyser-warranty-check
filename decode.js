@@ -11,16 +11,16 @@
   const MONTHS = ["January", "February", "March", "April", "May", "June", "July",
     "August", "September", "October", "November", "December"];
 
-  // Letters confirmed against a real source. Others are calculated.
-  // D = 2025 is on Kwikot's FAQ. E to I (2026 to 2030) are from Kwikot's letter list
-  // supplied by the office. All match the calculated sequence.
-  const CONFIRMED = {
+  // Known letters (no "check the plate" note). Others are calculated.
+  // D = 2025 is on Kwikot's FAQ. E to I (2026 to 2030) are from our own internal records,
+  // not published by Kwikot. All match the calculated sequence.
+  const KNOWN = {
     D: { year: 2025, source: "Kwikot FAQ" },
-    E: { year: 2026, source: "Kwikot letter list" },
-    F: { year: 2027, source: "Kwikot letter list" },
-    G: { year: 2028, source: "Kwikot letter list" },
-    H: { year: 2029, source: "Kwikot letter list" },
-    I: { year: 2030, source: "Kwikot letter list" },
+    E: { year: 2026, source: "our records" },
+    F: { year: 2027, source: "our records" },
+    G: { year: 2028, source: "our records" },
+    H: { year: 2029, source: "our records" },
+    I: { year: 2030, source: "our records" },
   };
 
   // Read what the plumber typed. Accepts 11-K-5, 11K5, 11 k 5, 11/K/5, 3-V.
@@ -121,7 +121,7 @@
       // Cover runs to the last day of the manufacture month, N years on.
       expiry: new Date(year + p.years, p.month, 0),
       // Confirmed only when this plate's year is the one the source gives for the letter.
-      letterConfirmed: !!CONFIRMED[p.letter] && CONFIRMED[p.letter].year === year,
+      letterKnown: !!KNOWN[p.letter] && KNOWN[p.letter].year === year,
       notes,
     }, today, installDate);
   }
@@ -159,11 +159,11 @@
       brand: "ariston",
       code: p.serial, year: p.year, dayOfYear: p.day,
       madeText: made.toLocaleDateString("en-ZA", { day: "numeric", month: "long", year: "numeric" }),
-      years: ARISTON_YEARS, made, expiry, letterConfirmed: true, notes: p.notes,
+      years: ARISTON_YEARS, made, expiry, letterKnown: true, notes: p.notes,
     }, today, installDate);
   }
 
-  const api = { LETTERS, BASE, CYCLE, MONTHS, CONFIRMED, parse, yearFor, assess, ageText, parseAriston, assessAriston };
+  const api = { LETTERS, BASE, CYCLE, MONTHS, KNOWN, parse, yearFor, assess, ageText, parseAriston, assessAriston };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.GeyserCode = api;
 })(this);

@@ -125,7 +125,7 @@ function render() {
 
   const notes = r.notes.map(n => ["", n]);
   if (r.from === "installation") notes.push(["", `Warranty counted from the install date (${fmt(r.install)}). ${b.installNote}`]);
-  if (!r.letterConfirmed) notes.push(["", `Year letter ${r.letter} follows Kwikot's letter sequence. If the geyser clearly doesn't look like a ${r.year} geyser, check the plate again.`]);
+  if (!r.letterKnown) notes.push(["", `Year letter ${r.letter} follows Kwikot's letter sequence. If the geyser clearly doesn't look like a ${r.year} geyser, check the plate again.`]);
   risks.forEach(([, t]) => notes.push(["risk", "Claim risk: " + t]));
 
   const row = (k, v) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`;
@@ -228,12 +228,12 @@ $("brandPick").addEventListener("click", e => {
 $("f").addEventListener("submit", e => { e.preventDefault(); $(B().input).blur(); example = false; check(); });
 $("inst").addEventListener("change", () => { example = false; check(false); });
 
-// Kwikot letter table: both years each letter stands for. Confirmed years are highlighted,
+// Kwikot letter table: both years each letter stands for. Known years are highlighted,
 // years still to come are faded.
 (function () {
   const G = GeyserCode, thisYear = new Date().getFullYear();
   const cells = [...G.LETTERS].map((l, i) => {
-    const conf = G.CONFIRMED[l];
+    const conf = G.KNOWN[l];
     const yrs = [G.BASE + i, G.BASE + i + G.CYCLE].map(y => {
       const cls = [conf && conf.year === y ? "now" : "", y > thisYear ? "future" : ""].filter(Boolean).join(" ");
       return `<span${cls ? ` class="${cls}"` : ""}>${y}</span>`;

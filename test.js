@@ -34,13 +34,13 @@ eq("Future install ignored", [r.from, r.install], ["manufacture", null]);
 r = G.assess("6-D-5", d("2026-11-10"), d("2025-01-01"));
 eq("Install before manufacture ignored", r.from, "manufacture");
 
-// Kwikot letters to 2030 (from Kwikot's letter list): checked as if it's that year.
+// Kwikot letters to 2030 (from our internal records): checked as if it's that year.
 [["E", 2026], ["F", 2027], ["G", 2028], ["H", 2029], ["I", 2030]].forEach(([l, y]) => {
   const t = G.assess(`3-${l}-5`, d(`${y}-08-01`));
-  eq(`${l} made Mar ${y}, checked Aug ${y}: ${y}, confirmed, covered`, [t.year, t.letterConfirmed, t.covered], [y, true, true]);
+  eq(`${l} made Mar ${y}, checked Aug ${y}: ${y}, known, covered`, [t.year, t.letterKnown, t.covered], [y, true, true]);
 });
 r = G.assess("6-F-5", d("2026-11-10"));
-eq("F before 2027 still means 2003, not confirmed", [r.year, r.letterConfirmed, r.covered], [2003, false, false]);
+eq("F before 2027 still means 2003, not a known year", [r.year, r.letterKnown, r.covered], [2003, false, false]);
 r = G.assess("12-I-5", d("2030-12-15"));
 eq("12-I-5 in Dec 2030 covered to 31 Dec 2035", [r.year, r.expiry.toDateString()], [2030, d("2035-12-31").toDateString()]);
 r = G.assess("1-J-5", d("2031-01-10"));

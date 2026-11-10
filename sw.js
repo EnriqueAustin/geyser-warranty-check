@@ -1,6 +1,6 @@
 // Caches the app so it works in a roof space with no signal.
 // Bump VERSION whenever you change any file so phones pick up the update.
-const VERSION = "gwc-v9";
+const VERSION = "gwc-v10";
 const WAIT_MS = 3000; // on weak signal, give up on the network after this and use the saved copy
 const FILES = ["./", "index.html", "app.js", "decode.js", "manifest.webmanifest", "icon.svg", "icon-192.png", "icon-512.png", "icon-maskable-512.png", "apple-touch-icon.png"];
 
